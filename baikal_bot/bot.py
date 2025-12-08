@@ -2,10 +2,12 @@ import telebot
 import time
 import logging
 import sys
+import os
 from telebot import types
 
 # ============ НАСТРОЙКА ============
-TOKEN = '7632902868:AAFyNxN3tej53c8z8TY0_Ip-kPkxDWCeqwk'
+# Получаем токен из переменных окружения или используем дефолтный
+TOKEN = os.environ.get('BOT_TOKEN', '7632902868:AAFyNxN3tej53c8z8TY0_Ip-kPkxDWCeqwk')
 bot = telebot.TeleBot(TOKEN)
 
 # Настройка логирования
@@ -18,6 +20,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+print("=" * 60)
+print("🤖 БОТ 'БАЙКАЛЬСКИЕ МУШКИ' ЗАПУЩЕН НА RENDER")
+print("=" * 60)
+print(f"Токен: {TOKEN[:10]}...")
 
 # ============ ФУНКЦИИ БОТА ============
 
@@ -49,7 +55,7 @@ def send_welcome(message):
         caption=welcome_text,
         reply_markup=markup
     )
-
+    logger.info(f"Пользователь {message.from_user.id} запустил бота")
 
 @bot.message_handler(func=lambda message: message.text == '🧵 Каталог мушек')
 def show_catalog(message):
@@ -64,7 +70,7 @@ def show_catalog(message):
         reply_markup=markup,
         parse_mode='Markdown'
     )
-
+    logger.info(f"Пользователь {message.from_user.id} запросил каталог")
 
 @bot.message_handler(func=lambda message: message.text == '❓ Консультация')
 def show_consultation(message):
@@ -91,7 +97,7 @@ def show_consultation(message):
         consultation_text,
         parse_mode='Markdown'
     )
-
+    logger.info(f"Пользователь {message.from_user.id} запросил консультацию")
 
 @bot.message_handler(func=lambda message: message.text == '👨‍🦳 О мастере')
 def show_about_master(message):
@@ -107,9 +113,9 @@ def show_about_master(message):
 
 С появлением омулевой рыбалки на удочку во всех её видах, освоил и эти мушки. Сам рыбачу всеми не запрещёнными способами, кроме нахлыста...
     """
-
+    
     bot.send_message(message.chat.id, about_text, parse_mode='Markdown')
-
+    logger.info(f"Пользователь {message.from_user.id} запросил информацию о мастере")
 
 @bot.message_handler(func=lambda message: message.text == '🏔️ О Байкале')
 def show_about_Baikal(message):
@@ -128,21 +134,23 @@ def show_about_Baikal(message):
 🌊 Разные условия на восточном и западном берегах
 ❄️ Зимняя рыбалка имеет свои особенности
     """
-
+    
     bot.send_message(message.chat.id, about_text, parse_mode='Markdown')
-
+    logger.info(f"Пользователь {message.from_user.id} запросил информацию о Байкале")
 
 # ============ ЗАПУСК БОТА ============
 
 if __name__ == '__main__':
+    # Удаляем старый webhook (на всякий случай)
+    try:
+        bot.remove_webhook()
+        print("✅ Webhook удален")
+    except Exception as e:
+        print(f"⚠️ Не удалось удалить webhook: {e}")
+    
+    print("🚀 Запускаю polling...")
     print("=" * 60)
-    print("🤖 БОТ 'БАЙКАЛЬСКИЕ МУШКИ' ЗАПУЩЕН НА RAILWAY")
-    print("=" * 60)
-    print(f"Токен: {TOKEN[:10]}...")
-    print("Запускаю polling...")
-    print("Для остановки: Ctrl+C")
-    print("=" * 60)
-
+    
     # Запуск с обработкой ошибок
     while True:
         try:
@@ -152,4 +160,4 @@ if __name__ == '__main__':
             logger.error(f"Ошибка: {e}")
             print(f"⚠️ Ошибка: {e}")
             print("🔄 Перезапускаю через 10 секунд...")
-            time.sleep(10)zz
+            time.sleep(10)
