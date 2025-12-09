@@ -108,7 +108,18 @@ def show_about_master(message):
 С появлением омулевой рыбалки на удочку во всех её видах, освоил и эти мушки. Сам рыбачу всеми не запрещёнными способами, кроме нахлыста...
     """
 
-    bot.send_message(message.chat.id, about_text, parse_mode='Markdown')
+    photo_url = 'https://disk.yandex.ru/i/WPgd57M9AleCDQ'
+    
+    try:
+        bot.send_photo(
+            chat_id=message.chat.id,
+            photo=photo_url,
+            caption=about_text,
+            parse_mode='Markdown'
+        )
+    except Exception as e:
+        # Если фото не загружается, отправляем только текст
+        bot.send_message(message.chat.id, about_text, parse_mode='Markdown')
 
 
 @bot.message_handler(func=lambda message: message.text == '🏔️ О Байкале')
@@ -129,7 +140,19 @@ def show_about_Baikal(message):
 ❄️ Зимняя рыбалка имеет свои особенности
     """
 
-    bot.send_message(message.chat.id, about_text, parse_mode='Markdown')
+     photo_url = 'https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_682f156b357a8348a5217a2c_682f4f4fc4dca763dbf19721/post_crop_small_1080'
+    
+    try:
+        bot.send_photo(
+            chat_id=message.chat.id,
+            photo=photo_url,
+            caption=about_text,
+            parse_mode='Markdown'
+        )
+    except Exception as e:
+        # Если фото не загружается, отправляем только текст
+        bot.send_message(message.chat.id, about_text, parse_mode='Markdown')
+
 
 
 # ============ ЗАПУСК БОТА ============
@@ -155,3 +178,4 @@ if __name__ == '__main__':
             print(f"⚠️ Ошибка: {e}")
             print("🔄 Перезапускаю через 10 секунд...")
             time.sleep(10)
+
