@@ -140,7 +140,7 @@ def show_about_Baikal(message):
 ❄️ Зимняя рыбалка имеет свои особенности
     """
 
-     photo_url = 'https://avatars.mds.yandex.net/i?id=b2bb57026de5ad3a0ca6417d5bf7ff40_l-16404329-images-thumbs&n=13'
+    photo_url = 'https://avatars.mds.yandex.net/i?id=b2bb57026de5ad3a0ca6417d5bf7ff40_l-16404329-images-thumbs&n=13'
     
     try:
         bot.send_photo(
@@ -178,5 +178,6 @@ if __name__ == '__main__':
             print(f"⚠️ Ошибка: {e}")
             print("🔄 Перезапускаю через 10 секунд...")
             time.sleep(10)
+
 
 
