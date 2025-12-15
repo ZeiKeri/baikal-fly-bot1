@@ -1,8 +1,7 @@
 services:
-  - type: web
-    name: baikal-fly-bot
+  - type: worker
+    name: baikal-fly-bot-worker
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: python bot.py
     plan: free
-    autoDeploy: true
