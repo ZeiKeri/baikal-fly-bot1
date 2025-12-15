@@ -155,10 +155,36 @@ def show_about_Baikal(message):
 
 
 
+from flask import Flask, request
+import threading
+
+# Создаем простой веб-сервер
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "✅ Бот 'Байкальские Мушки' работает!"
+
+@app.route('/health')
+def health():
+    return "OK", 200
+
 # ============ ЗАПУСК БОТА ============
 
 if __name__ == '__main__':
-    # Удаляем старый webhook (на всякий случай)
+    print("=" * 60)
+    print("🤖 БОТ 'БАЙКАЛЬСКИЕ МУШКИ' ЗАПУЩЕН")
+    print("=" * 60)
+    
+    # Запускаем Flask в отдельном потоке
+    def run_flask():
+        app.run(host='0.0.0.0', port=10000)
+    
+    flask_thread = threading.Thread(target=run_flask, daemon=True)
+    flask_thread.start()
+    print("🌐 Веб-сервер запущен на порту 10000")
+    
+    # Удаляем старый webhook
     try:
         bot.remove_webhook()
         print("✅ Webhook удален")
@@ -168,16 +194,15 @@ if __name__ == '__main__':
     print("🚀 Запускаю polling...")
     print("=" * 60)
     
-    # Запуск с обработкой ошибок
+    # Главный цикл бота
     while True:
         try:
-            logger.info("Запускаю polling...")
             bot.polling(none_stop=True, interval=0, timeout=30)
         except Exception as e:
-            logger.error(f"Ошибка: {e}")
             print(f"⚠️ Ошибка: {e}")
             print("🔄 Перезапускаю через 10 секунд...")
             time.sleep(10)
+
 
 
 
